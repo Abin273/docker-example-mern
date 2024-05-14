@@ -1,0 +1,15 @@
+version: '3'
+
+# each containers are services
+services:
+  node-app:
+    build: . # path where docker file exist
+    ports:
+      - "3005:9000"
+    volumes:
+      - ./:/app
+    environment:
+      - PORT=9000
+    # env_file:
+    #   - . .env
+      

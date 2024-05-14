@@ -1,0 +1,25 @@
+version: "3"
+
+# each containers are services
+services:
+  node-app:
+    build: . # path where docker file exist
+    ports:
+      - "4000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=abin
+      - MONGO_INITDB_ROOT_PASSWORD=abin
+
+    volumes:
+      # Named volume. Named volumes are the recommended way to persist data in Docker.
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:

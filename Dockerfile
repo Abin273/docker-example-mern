@@ -1,18 +1,33 @@
+# Each commands are considered as each layer in docker image
+# Docker caches the results of each layers or commands
+
 # specify a base image
 FROM node:20-alpine
 
 # all subsequent COPY, RUN, and other commands will be executed in that directory specified in WORKDIR 
-WORKDIR /usr/app
+WORKDIR /app
 
-# copy files ends with ".json" from current working directory of local macine to current working directory inside the container 
-# when we re run following npm install will execute only in any changes occur in ,json files 
-COPY .*.json ./
+# Copies all files starting with "package" and ending with ".json" from the 
+# current working directory of local macine to current working directory inside the container.('.' indicates '/app').
+# We are copying and package*.json files seperately because, Since we caching the result of this command,
+# when we re-build the image, if there is no change in package.json file(in this layer), it uses the 
+# cached result(Other fles and folders can change everytime).
+COPY package*.json .
 
-# install some dependencies.
-RUN npm install
+# ARG is passing from docker-compose file
+ARG NODE_ENV
+# Run bash script to install some dependencies based on dev or prod environment.
+RUN if [ "$NODE_ENV" = "development" ]; \
+        then npm install; \
+        else npm install --only=production; \
+        fi
 
-# copy everything from current working directory of local macine to current working directory inside the container 
-COPY ./ ./
+# Copies every single files and folders from current working directory of local macine to current working
+# directory inside the container 
+COPY . .
+
+# Port in the container in which the application runs.
+EXPOSE 3000
 
 # default command
-CMD ["npm", "start"]
+CMD ["node", "index.js"]

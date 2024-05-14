@@ -7,7 +7,29 @@ Docker is a platform that simplifies the creation, deployment, and running of ap
 - build an image
 
 ```
-docker built -t image-name .
+docker build -t image-name .
+```
+
+
+- To run a docker image to crate a container.
+```
+docker run image_name
+```
+
+- To run a docker image to crate a container in  detached mode (in the background).
+```
+docker run -d image_name
+```
+
+- To do port mapping and runnig container (To access application running inside container port 8080 from 
+ our local machine port 5000. By default app inside container cannot talk with outside world)
+
+```
+docker run -p 5000:8080 image-name
+```
+or
+```
+docker run -p 5000:8080 -d image-name
 ```
 
 -  Stop a running container
@@ -35,11 +57,12 @@ docker ps -a
 
 - Remove one or more containers
 ```
-docker rm
+docker rm container_id
 ```
-
-eg:- docker rm container_id
-
+- To remove containers forcely
+```
+docker rm container_id -f
+```
 - Remove one or more images
 ```
 docker rmi
@@ -54,13 +77,32 @@ docker pull
 
 eg:- docker pull ubuntu:latest
 
-
-- port mapping and runnig container
+- To Run a command in a running container
 
 ```
-docker run -p 5000:8080 image-name
+docker exec -it container_name command
 ```
 
+eg:- docker exec -it container_name bash
+
+we can use bash or sh or ash
+
+- To list all volume
+
+```
+docker volume ls
+```
+
+- To remove one or more volumes  
+
+```
+docker volume rm volume_name
+```
+- To remove all unused volume
+
+```
+docker volume prune
+```
 
 # Docker compose
 
@@ -86,13 +128,25 @@ docker-compose ps
 docker-compose up
 ```
 
+- To rebuild the images and  starts all containers defined in the Docker Compose configuration file.
+
+```
+docker compose up --build
+```
+
+We can also do it in detach mode using -d
+
+```
+docker compose up -d --build
+```
+
 - To stops and removes all containers, networks, volumes, and images created by 'docker-compose up'
 
 ```
 docker-compose down
 ```
 
-- To Remove volumes associated with containers as well
+- To shut down the Docker containers defined in a Docker Compose file and remove associated volumes
 
 ```
 docker-compose down -v
@@ -134,7 +188,22 @@ eg:- docker-compose exec service_name command
 ```
 docker-compose logs
 ```
+=======================================================================================
+- Command to up or down in development mode
 
+```
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d
+```
+```
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down -v
+```
+-v deletes anonymous volumes
 
+- Command to up or down in production mode
 
-
+```
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --build
+```
+```
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down -v
+```

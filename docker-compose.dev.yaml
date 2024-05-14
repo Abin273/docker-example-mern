@@ -1,0 +1,22 @@
+version: '3'
+# each containers are services
+services:
+  node-app:
+    build:
+        context: .
+        args:
+          - NODE_ENV=development
+    volumes:
+      # Here '.' ie, current working directory on the host machine will be mounted to '/app' inside the container(sync them). 
+      # Any changes made to files in '.' will be immediately reflected inside the container at /app, and vice versa.
+      # It is also called bind mound.
+      - .:/app
+      # The line - /app/node_modules creates a anonymous for the /app/node_modules directory inside the container,
+      #  ensuring it persists independently of changes on the host machine.
+      # Also called anonymous volume
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: ["npm", "run", "dev"]
+    
+      
