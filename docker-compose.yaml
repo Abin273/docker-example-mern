@@ -15,11 +15,14 @@ services:
     image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=abin
-      - MONGO_INITDB_ROOT_PASSWORD=abin
+      - MONGO_INITDB_ROOT_PASSWORD=password
 
     volumes:
       # Named volume. Named volumes are the recommended way to persist data in Docker.
       - mongo-db:/data/db
+
+  redis:
+    image: redis
 
 volumes:
   mongo-db:

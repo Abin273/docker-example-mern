@@ -207,3 +207,26 @@ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --build
 ```
 docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down -v
 ```
+
+# REDIS
+
+commands
+```
+docker exec -it 83f7dda4732c sh
+```
+
+```
+redis-cli
+```
+
+```
+PING
+```
+
+```
+KEYS *
+```
+
+```
+GET key_name
+```

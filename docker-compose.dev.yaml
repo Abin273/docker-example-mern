@@ -17,6 +17,14 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - MONGO_USER=abin     
+      - MONGO_PASSWORD=password  
+      - SESSION_SECRET=itsverysecret  
     command: ["npm", "run", "dev"]
     
-      
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=abin
+      - MONGO_INITDB_ROOT_PASSWORD=password     
+         
